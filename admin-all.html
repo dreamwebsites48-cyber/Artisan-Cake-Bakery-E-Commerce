@@ -1,0 +1,1272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artisan Admin Portal | Premium Control Panel</title>
+    <meta name="description" content="Simulated administrator command center for Artisan Cake Bakery, featuring responsive metrics, dynamic order processing, catalog management, and client dashboards.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        :root {
+            --color-cream: #fcf8f2;
+            --color-pink: #f4dcd6;
+            --color-brown: #4a2e1b;
+            --color-dark: #2c1e16;
+            --color-white: #ffffff;
+            --color-gold: #d4af37;
+            --color-gold-hover: #b5952f;
+            --font-heading: 'Playfair Display', serif;
+            --font-body: 'Inter', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: #f8fafc;
+            color: #334155;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5, h6, .brand-text {
+            font-family: var(--font-heading);
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--color-white);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .cake-loader {
+            font-size: 4rem;
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Layout */
+        .app-container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: var(--color-dark);
+            color: var(--color-white);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 2rem 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 4px 0 25px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            margin-bottom: 2rem;
+            text-decoration: none;
+            color: var(--color-white);
+        }
+
+        .sidebar-brand i {
+            color: var(--color-gold);
+            font-size: 1.5rem;
+        }
+
+        .sidebar-brand span {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 0.5rem;
+        }
+
+        .nav-link-custom {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.85rem 1.25rem;
+            color: rgba(255, 255, 255, 0.65);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.25s ease;
+            font-weight: 500;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link-custom:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--color-white);
+        }
+
+        .nav-link-custom.active {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--color-gold);
+            font-weight: 600;
+            border-left: 3px solid var(--color-gold);
+        }
+
+        .nav-link-custom i {
+            width: 20px;
+            text-align: center;
+            font-size: 1.1rem;
+        }
+
+        .logout-container {
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 280px;
+            flex-grow: 1;
+            min-height: 100vh;
+            padding: 2rem 3rem;
+            transition: all 0.3s ease;
+        }
+
+        /* Top Navigation Header */
+        .top-nav {
+            background: var(--color-white);
+            padding: 1.25rem 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            border: 1px solid rgba(0,0,0,0.03);
+        }
+
+        .top-nav-left h2 {
+            font-weight: bold;
+            margin: 0;
+            color: var(--color-dark);
+            font-size: 1.75rem;
+        }
+
+        .top-nav-right {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .action-icon-btn {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            border: 1px solid rgba(0,0,0,0.08);
+            background: transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .action-icon-btn:hover {
+            background: #f1f5f9;
+            color: var(--color-dark);
+        }
+
+        .notification-dot {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 1px solid var(--color-white);
+        }
+
+        .admin-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-left: 1.5rem;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .admin-avatar {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 2px solid var(--color-cream);
+            box-shadow: 0 2px 10px rgba(212,175,55,0.15);
+        }
+
+        /* Dashboard Metric Cards */
+        .metric-card {
+            background: var(--color-white);
+            border: 1px solid rgba(0,0,0,0.03);
+            border-radius: 20px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.02);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 30px rgba(0,0,0,0.05);
+        }
+
+        .metric-info h6 {
+            font-family: var(--font-body);
+            color: #94a3b8;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.75rem;
+        }
+
+        .metric-info h3 {
+            font-family: var(--font-body);
+            font-weight: 700;
+            font-size: 2rem;
+            color: var(--color-dark);
+            margin: 0;
+        }
+
+        .metric-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 0.25rem 0.6rem;
+            border-radius: 8px;
+            margin-top: 0.75rem;
+        }
+
+        .metric-badge.success {
+            background: rgba(34, 197, 94, 0.1);
+            color: #16a34a;
+        }
+
+        .metric-badge.warning {
+            background: rgba(245, 158, 11, 0.1);
+            color: #d97706;
+        }
+
+        .metric-icon-box {
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .icon-gold { background: rgba(212, 175, 55, 0.12); color: var(--color-gold); }
+        .icon-emerald { background: rgba(16, 185, 129, 0.1); color: #10b981; }
+        .icon-violet { background: rgba(139, 92, 246, 0.1); color: #8b5cf6; }
+        .icon-rose { background: rgba(244, 63, 94, 0.1); color: #f43f5e; }
+
+        /* Data Tables & Panels */
+        .panel-card {
+            background: var(--color-white);
+            border-radius: 20px;
+            border: 1px solid rgba(0,0,0,0.03);
+            box-shadow: 0 4px 25px rgba(0,0,0,0.02);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .panel-header {
+            padding: 1.75rem 2rem;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .panel-header h4 {
+            font-weight: bold;
+            margin: 0;
+            color: var(--color-dark);
+        }
+
+        .table-custom th {
+            background: #f8fafc;
+            font-family: var(--font-body);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 1.5rem;
+        }
+
+        .table-custom td {
+            padding: 1.2rem 1.5rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f5f9;
+            color: #334155;
+            font-size: 0.9rem;
+        }
+
+        .table-custom tr:last-child td {
+            border-bottom: none;
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.25px;
+        }
+
+        .status-delivered { background: #ecfdf5; color: #059669; }
+        .status-processing { background: #eff6ff; color: #2563eb; }
+        .status-pending { background: #fffbeb; color: #d97706; }
+        .status-cancelled { background: #fef2f2; color: #dc2626; }
+
+        .btn-gold-action {
+            background: var(--color-gold);
+            color: var(--color-white);
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            transition: all 0.2s;
+        }
+
+        .btn-gold-action:hover {
+            background: var(--color-gold-hover);
+            transform: translateY(-1px);
+            color: var(--color-white);
+        }
+
+        /* Dynamic Section Toggle Control */
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active-section {
+            display: block;
+        }
+
+        /* Simulated Login CSS */
+        #login-screen {
+            background: linear-gradient(135deg, var(--color-cream) 0%, var(--color-white) 100%);
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .login-panel {
+            background: var(--color-white);
+            width: 100%;
+            max-width: 480px;
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(74, 46, 27, 0.08);
+            border: 1px solid rgba(212,175,55,0.1);
+            text-align: center;
+        }
+
+        .btn-gold-login {
+            background: var(--color-gold);
+            color: var(--color-white);
+            border: none;
+            padding: 1rem;
+            font-weight: bold;
+            border-radius: 12px;
+            width: 100%;
+            transition: all 0.2s;
+        }
+
+        .btn-gold-login:hover {
+            background: var(--color-gold-hover);
+            color: var(--color-white);
+        }
+
+        /* Custom Inputs */
+        .form-control:focus {
+            border-color: var(--color-gold);
+            box-shadow: 0 0 0 0.25rem rgba(212,175,55,0.15);
+        }
+
+        /* Sidebar Responsive Utilities */
+        @media (max-width: 1024px) {
+            .sidebar {
+                transform: translateX(-280px);
+            }
+            .sidebar.show {
+                transform: translateX(0);
+            }
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
+            .mobile-toggle {
+                display: flex !important;
+            }
+        }
+
+        .mobile-toggle {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Luxury Screen Loader -->
+    <div id="loader">
+        <div class="cake-loader">👑</div>
+    </div>
+
+    <!-- SECTION 1: Simulated Admin Login Screen -->
+    <div id="login-screen">
+        <div class="login-panel animate__animated animate__zoomIn">
+            <div class="mb-4 text-center">
+                <div class="d-inline-flex align-items-center justify-content-center bg-warning bg-opacity-10 rounded-circle p-4 mb-3" style="width: 80px; height: 80px;">
+                    <i class="fas fa-crown text-gold" style="font-size: 2.5rem;"></i>
+                </div>
+                <h2 class="fw-bold mb-1">Artisan Admin Portal</h2>
+                <p class="text-muted small">Secure Management Interface Demo</p>
+            </div>
+            <form id="simulatedLoginForm">
+                <div class="mb-3 text-start">
+                    <label class="form-label small text-muted fw-bold text-uppercase">Admin Account</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="far fa-user"></i></span>
+                        <input type="text" class="form-control border-start-0 bg-light bg-opacity-50 py-2" id="loginUser" value="admin" required>
+                    </div>
+                </div>
+                <div class="mb-4 text-start">
+                    <label class="form-label small text-muted fw-bold text-uppercase">Security Key</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0 text-muted"><i class="fas fa-lock"></i></span>
+                        <input type="password" class="form-control border-start-0 bg-light bg-opacity-50 py-2" id="loginPass" value="••••••••" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-gold-login shadow d-flex align-items-center justify-content-center gap-2">
+                    Authorize Securely <i class="fas fa-arrow-right fs-6"></i>
+                </button>
+            </form>
+            <div class="mt-4 pt-3 border-top text-center">
+                <a href="index.html" class="text-decoration-none text-muted small"><i class="fas fa-arrow-left me-1"></i> Exit to Storefront</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- SECTION 2: Admin Dashboard Dashboard App -->
+    <div class="app-container" id="admin-layout" style="display: none;">
+        
+        <!-- Sidebar Component -->
+        <aside class="sidebar">
+            <a href="#" class="sidebar-brand">
+                <i class="fas fa-crown"></i>
+                <span class="brand-text">Artisan Panel</span>
+            </a>
+            
+            <nav class="nav-menu-container">
+                <span class="text-uppercase text-muted fw-bold small d-block mb-3" style="letter-spacing: 1px; opacity: 0.5; font-size: 0.7rem;">Control Hub</span>
+                <ul class="nav-menu">
+                    <li class="nav-item">
+                        <a href="#dashboard" class="nav-link-custom active" onclick="switchTab('dashboard', this)">
+                            <i class="fas fa-chart-line"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#orders" class="nav-link-custom" onclick="switchTab('orders', this)">
+                            <i class="fas fa-shopping-bag"></i> Orders
+                            <span class="badge bg-danger rounded-pill ms-auto" style="font-size: 0.7rem;">14</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#products" class="nav-link-custom" onclick="switchTab('products', this)">
+                            <i class="fas fa-birthday-cake"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#categories" class="nav-link-custom" onclick="switchTab('categories', this)">
+                            <i class="fas fa-tags"></i> Categories
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#customers" class="nav-link-custom" onclick="switchTab('customers', this)">
+                            <i class="fas fa-users"></i> Customers
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#coupons" class="nav-link-custom" onclick="switchTab('coupons', this)">
+                            <i class="fas fa-ticket-alt"></i> Coupons
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#settings" class="nav-link-custom" onclick="switchTab('settings', this)">
+                            <i class="fas fa-cog"></i> Store Settings
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="logout-container">
+                <a href="#" id="logoutAdminBtn" class="nav-link-custom text-danger" style="background: transparent;">
+                    <i class="fas fa-sign-out-alt"></i> Logout Admin
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Body -->
+        <main class="main-content">
+            
+            <!-- Dynamic Content Container -->
+            <div class="container-fluid p-0">
+                
+                <!-- Top Action Header -->
+                <header class="top-nav animate__animated animate__fadeInDown">
+                    <div class="top-nav-left d-flex align-items-center gap-3">
+                        <!-- Mobile Toggler -->
+                        <button class="mobile-toggle btn btn-light border d-none rounded-3 p-2" onclick="document.querySelector('.sidebar').classList.toggle('show')">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <div>
+                            <h2 id="pageTitleDisplay">Dashboard Overview</h2>
+                            <p class="text-muted small mb-0">Welcome back, <span class="fw-semibold text-dark">Administrator</span></p>
+                        </div>
+                    </div>
+                    
+                    <div class="top-nav-right">
+                        <!-- Alerts -->
+                        <button class="action-icon-btn" title="Notifications">
+                            <i class="far fa-bell"></i>
+                            <span class="notification-dot"></span>
+                        </button>
+                        <!-- Quick View Cart -->
+                        <button class="action-icon-btn" onclick="window.location='index.html'" title="View Main Store">
+                            <i class="fas fa-store"></i>
+                        </button>
+                        
+                        <!-- Admin Identifier -->
+                        <div class="admin-profile">
+                            <div class="text-end d-none d-md-block">
+                                <div class="fw-bold text-dark small" style="line-height: 1;">Master Admin</div>
+                                <small class="text-muted" style="font-size: 0.75rem;">Super Operator</small>
+                            </div>
+                            <img src="https://ui-avatars.com/api/?name=Admin&background=d4af37&color=fff&bold=true&rounded=true" alt="Admin Avatar" class="admin-avatar">
+                        </div>
+                    </div>
+                </header>
+
+                <!-- ====================== SECTION: DASHBOARD ====================== -->
+                <div id="section-dashboard" class="admin-section active-section animate__animated animate__fadeIn">
+                    
+                    <!-- Fast Stats Metric Grid -->
+                    <div class="row g-4 mb-4">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="metric-card">
+                                <div class="metric-info">
+                                    <h6>Total Revenue</h6>
+                                    <h3>$28,450</h3>
+                                    <span class="metric-badge success"><i class="fas fa-arrow-trend-up"></i> +12.5%</span>
+                                </div>
+                                <div class="metric-icon-box icon-emerald">
+                                    <i class="fas fa-sack-dollar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="metric-card">
+                                <div class="metric-info">
+                                    <h6>Orders Fulfilled</h6>
+                                    <h3>1,842</h3>
+                                    <span class="metric-badge success"><i class="fas fa-arrow-trend-up"></i> +8.4%</span>
+                                </div>
+                                <div class="metric-icon-box icon-violet">
+                                    <i class="fas fa-bag-shopping"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="metric-card">
+                                <div class="metric-info">
+                                    <h6>Store Customers</h6>
+                                    <h3>1,250</h3>
+                                    <span class="metric-badge success"><i class="fas fa-arrow-trend-up"></i> +19.2%</span>
+                                </div>
+                                <div class="metric-icon-box icon-gold">
+                                    <i class="fas fa-users"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="metric-card">
+                                <div class="metric-info">
+                                    <h6>Pending Alerts</h6>
+                                    <h3>14</h3>
+                                    <span class="metric-badge warning"><i class="far fa-clock"></i> Action Needed</span>
+                                </div>
+                                <div class="metric-icon-box icon-rose">
+                                    <i class="fas fa-triangle-exclamation"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Custom Chart Mock & Dual Container Panels -->
+                    <div class="row g-4">
+                        <!-- Recent Orders (Dashboard Tab Widget) -->
+                        <div class="col-lg-8">
+                            <div class="panel-card h-100">
+                                <div class="panel-header">
+                                    <h4>Recent Order Processing</h4>
+                                    <button class="btn btn-sm btn-light border rounded-pill px-3 text-muted" onclick="switchTab('orders')">View All Logs</button>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-custom align-middle mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Order #</th>
+                                                <th>Customer</th>
+                                                <th>Date</th>
+                                                <th>Status</th>
+                                                <th>Amount</th>
+                                                <th class="text-end">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="fw-bold text-dark">#ORD-3205</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <div class="bg-secondary bg-opacity-10 text-secondary rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">JD</div>
+                                                        <span>John Doe</span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-muted">Today, 11:45 AM</td>
+                                                <td><span class="status-pill status-pending"><i class="fas fa-spinner fa-spin me-1"></i> Pending</span></td>
+                                                <td class="fw-bold">$75.00</td>
+                                                <td class="text-end"><button class="btn btn-sm btn-light border" onclick="alert('Simulated Order Details Popup Modal')"><i class="far fa-eye text-gold"></i></button></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold text-dark">#ORD-3204</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <div class="bg-secondary bg-opacity-10 text-secondary rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">SA</div>
+                                                        <span>Sarah A.</span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-muted">Today, 09:20 AM</td>
+                                                <td><span class="status-pill status-processing"><i class="fas fa-truck-fast me-1"></i> Packing</span></td>
+                                                <td class="fw-bold">$140.00</td>
+                                                <td class="text-end"><button class="btn btn-sm btn-light border" onclick="alert('Simulated Order Details Popup Modal')"><i class="far fa-eye text-gold"></i></button></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold text-dark">#ORD-3203</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <div class="bg-secondary bg-opacity-10 text-secondary rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">MJ</div>
+                                                        <span>Mike Johnson</span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-muted">Yesterday</td>
+                                                <td><span class="status-pill status-delivered"><i class="fas fa-check-circle me-1"></i> Delivered</span></td>
+                                                <td class="fw-bold">$45.50</td>
+                                                <td class="text-end"><button class="btn btn-sm btn-light border" onclick="alert('Simulated Order Details Popup Modal')"><i class="far fa-eye text-gold"></i></button></td>
+                                            </tr>
+                                            <tr>
+                                                <td class="fw-bold text-dark">#ORD-3202</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center gap-2">
+                                                        <div class="bg-secondary bg-opacity-10 text-secondary rounded-circle d-flex align-items-center justify-content-center fw-bold small" style="width: 32px; height: 32px;">EM</div>
+                                                        <span>Emily M.</span>
+                                                    </div>
+                                                </td>
+                                                <td class="text-muted">Yesterday</td>
+                                                <td><span class="status-pill status-delivered"><i class="fas fa-check-circle me-1"></i> Delivered</span></td>
+                                                <td class="fw-bold">$195.00</td>
+                                                <td class="text-end"><button class="btn btn-sm btn-light border" onclick="alert('Simulated Order Details Popup Modal')"><i class="far fa-eye text-gold"></i></button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Hot Sellers Showcase Widget -->
+                        <div class="col-lg-4">
+                            <div class="panel-card h-100">
+                                <div class="panel-header">
+                                    <h4>Top Selling Cakes</h4>
+                                </div>
+                                <div class="p-4">
+                                    <div class="d-flex flex-column gap-3" id="hot-sellers-dashboard">
+                                        <!-- Render dynamic list via script on dashboard init -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====================== SECTION: ORDERS ====================== -->
+                <div id="section-orders" class="admin-section animate__animated animate__fadeIn">
+                    <div class="panel-card">
+                        <div class="panel-header">
+                            <h4>Live Orders Queue</h4>
+                            <div class="d-flex gap-2">
+                                <input type="text" class="form-control form-control-sm rounded-pill px-3" style="width: 250px;" placeholder="Search by order # or name...">
+                                <select class="form-select form-select-sm rounded-pill" style="width: 150px;">
+                                    <option>All Statuses</option>
+                                    <option>Pending</option>
+                                    <option>Processing</option>
+                                    <option>Delivered</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-custom align-middle mb-0" id="adminOrdersList">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Customer Profile</th>
+                                        <th>Purchase Timestamp</th>
+                                        <th>Current Status</th>
+                                        <th>Amount Payable</th>
+                                        <th class="text-end">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- List dynamically generated in JS below -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====================== SECTION: PRODUCTS ====================== -->
+                <div id="section-products" class="admin-section animate__animated animate__fadeIn">
+                    <div class="panel-card">
+                        <div class="panel-header">
+                            <h4>Store Products Directory</h4>
+                            <button class="btn btn-gold-action shadow-sm d-flex align-items-center gap-2" onclick="alert('Admin Demo Mode: Simulated Create Product Overlay Launched!')">
+                                <i class="fas fa-plus"></i> Add Custom Cake Product
+                            </button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-custom align-middle mb-0" id="adminProductsList">
+                                <thead>
+                                    <tr>
+                                        <th>IMG</th>
+                                        <th>Cake Name</th>
+                                        <th>SKU</th>
+                                        <th>Category</th>
+                                        <th>Price Rate</th>
+                                        <th class="text-end">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamically injected -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====================== SECTION: CATEGORIES ====================== -->
+                <div id="section-categories" class="admin-section animate__animated animate__fadeIn">
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="panel-card p-4">
+                                <h5 class="fw-bold mb-4">Create New Category</h5>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">Category Title</label>
+                                    <input type="text" class="form-control rounded-3" id="newCatName" placeholder="e.g. Festive Specialties">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label text-muted small fw-bold text-uppercase">Designation Slug</label>
+                                    <input type="text" class="form-control rounded-3" id="newCatSlug" placeholder="festive-specialties" disabled>
+                                </div>
+                                <button class="btn btn-gold-action w-100 py-2" onclick="addNewCategoryMock()">Create Category Entity</button>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="panel-card">
+                                <div class="panel-header">
+                                    <h4>Live Cake Categories</h4>
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-custom align-middle mb-0" id="adminCategoriesList">
+                                        <thead>
+                                            <tr>
+                                                <th>Title</th>
+                                                <th>Count</th>
+                                                <th>Status</th>
+                                                <th class="text-end">Controls</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Dynamic -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====================== SECTION: CUSTOMERS ====================== -->
+                <div id="section-customers" class="admin-section animate__animated animate__fadeIn">
+                    <div class="panel-card">
+                        <div class="panel-header">
+                            <h4>Customer Registry Directory</h4>
+                            <span class="badge bg-gold bg-opacity-10 text-gold px-3 py-2 rounded-pill">1,250 Valid Accounts</span>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-custom align-middle mb-0" id="adminCustomersList">
+                                <thead>
+                                    <tr>
+                                        <th>Name Profile</th>
+                                        <th>Contact Address</th>
+                                        <th>Joined Chronology</th>
+                                        <th>Order Count</th>
+                                        <th class="text-end">Controls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Dynamic Customers -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====================== SECTION: COUPONS ====================== -->
+                <div id="section-coupons" class="admin-section animate__animated animate__fadeIn">
+                    <div class="panel-card">
+                        <div class="panel-header">
+                            <h4>Promotions & Discount Codes</h4>
+                            <button class="btn btn-gold-action shadow-sm" onclick="alert('Launch Coupon Wizard Simulator')"><i class="fas fa-plus me-1"></i> Forge Code</button>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-custom align-middle mb-0" id="adminCouponsList">
+                                <thead>
+                                    <tr>
+                                        <th>Code Phrase</th>
+                                        <th>Deduction Method</th>
+                                        <th>Constraint Criteria</th>
+                                        <th>State</th>
+                                        <th class="text-end">Controls</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Injected below -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====================== SECTION: SETTINGS ====================== -->
+                <div id="section-settings" class="admin-section animate__animated animate__fadeIn">
+                    <div class="panel-card p-5">
+                        <h4 class="fw-bold mb-4"><i class="fas fa-sliders text-gold me-2"></i> Core Artisan Systems Configurations</h4>
+                        
+                        <div class="row g-4">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small">Primary Store Domain Title</label>
+                                    <input type="text" class="form-control bg-light py-2" value="Artisan Cake Bakery Inc.">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small">Support Operations Email Address</label>
+                                    <input type="email" class="form-control bg-light py-2" value="operations@artisancake.demo">
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small">Local Operational Currency</label>
+                                    <select class="form-select bg-light py-2">
+                                        <option selected>USD ($) - Dollar</option>
+                                        <option>GBP (£) - Pound</option>
+                                        <option>EUR (€) - Euro</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold small">Flat-Rate Courier Cost ($)</label>
+                                    <input type="number" class="form-control bg-light py-2" value="5.00">
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label fw-bold small">Tax Contribution Percentage (%)</label>
+                                    <input type="number" class="form-control bg-light py-2" value="5.0">
+                                </div>
+                                
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="sw1" checked>
+                                    <label class="form-check-label fw-semibold text-dark" for="sw1">Automate Order Invoice Generation</label>
+                                </div>
+                                <div class="form-check form-switch mb-3">
+                                    <input class="form-check-input" type="checkbox" id="sw2" checked>
+                                    <label class="form-check-label fw-semibold text-dark" for="sw2">Permit Anonymous Guest Checkout Transactions</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4 opacity-25">
+
+                        <div class="d-flex justify-content-end">
+                            <button class="btn btn-gold-action px-5 py-2" onclick="alert('Demo State Alert: Configuration preferences recorded in local memory context!')">Commit Preferences</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Bootstrap 5 Core -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Admin Core Simulated Engine Script -->
+    <script>
+        // Mock Database Context mirroring APP_PRODUCTS from main.js
+        const PRODUCTS_MOCK = [
+            { id: 1, name: "Golden Truffle Delight", sku: "CAKE-TRUF-001", category: "Chocolate Cakes", price: 39.99, img: "https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&w=100&q=80", sales: 145 },
+            { id: 2, name: "Vanilla Rose Elegance", sku: "CAKE-ROSE-002", category: "Wedding Cakes", price: 45.00, img: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&w=100&q=80", sales: 98 },
+            { id: 3, name: "Dark Chocolate Mud", sku: "CAKE-MUD-003", category: "Chocolate Cakes", price: 35.00, img: "https://images.unsplash.com/photo-1614707267537-b85aaf00c4b7?ixlib=rb-4.0.3&w=100&q=80", sales: 85 },
+            { id: 4, name: "Strawberry Blossom", sku: "CAKE-STRAW-004", category: "Birthday Cakes", price: 40.00, img: "https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?ixlib=rb-4.0.3&w=100&q=80", sales: 74 },
+            { id: 5, name: "Red Velvet Supreme", sku: "CAKE-VEL-005", category: "Birthday Cakes", price: 38.00, img: "https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?ixlib=rb-4.0.3&w=100&q=80", sales: 62 },
+            { id: 6, name: "Mango Tango Fusion", sku: "CAKE-MAN-006", category: "Birthday Cakes", price: 32.00, img: "https://images.unsplash.com/photo-1551404973-7bb6afce3698?ixlib=rb-4.0.3&w=100&q=80", sales: 51 }
+        ];
+
+        const ORDERS_MOCK = [
+            { id: "#ORD-3205", name: "John Doe", date: "Today, 11:45 AM", status: "Pending", amount: 75.00 },
+            { id: "#ORD-3204", name: "Sarah Wilson", date: "Today, 09:20 AM", status: "Processing", amount: 140.00 },
+            { id: "#ORD-3203", name: "Mike Johnson", date: "Yesterday", status: "Delivered", amount: 45.50 },
+            { id: "#ORD-3202", name: "Emily Miller", date: "Oct 24, 2025", status: "Delivered", amount: 195.00 },
+            { id: "#ORD-3201", name: "David Clark", date: "Oct 22, 2025", status: "Cancelled", amount: 32.00 },
+            { id: "#ORD-3200", name: "Rebecca G.", date: "Oct 20, 2025", status: "Delivered", amount: 89.00 }
+        ];
+
+        let CATEGORIES_MOCK = [
+            { name: "Birthday Cakes", count: 12, status: "Active" },
+            { name: "Wedding Cakes", count: 8, status: "Active" },
+            { name: "Chocolate Cakes", count: 15, status: "Active" },
+            { name: "Dietary Options (Vegan)", count: 5, status: "Inactive" }
+        ];
+
+        const CUSTOMERS_MOCK = [
+            { name: "John Doe", email: "john.doe@domain.com", joined: "June 12, 2025", orders: 12 },
+            { name: "Sarah Wilson", email: "sarah.wilson@web.com", joined: "July 04, 2025", orders: 4 },
+            { name: "Mike Johnson", email: "mike.j@demo.org", joined: "Sept 23, 2025", orders: 9 },
+            { name: "Emily Miller", email: "emily.m@host.net", joined: "Oct 01, 2025", orders: 1 },
+            { name: "David Clark", email: "dclark@mail.com", joined: "Oct 05, 2025", orders: 3 }
+        ];
+
+        const COUPONS_MOCK = [
+            { code: "WELCOME20", type: "20% Deduct", constraint: "New Customers", state: "Live" },
+            { code: "CHOCO10", type: "$10 Off", constraint: "Min Spend $50", state: "Live" },
+            { code: "FREESHIP", type: "Free Shipping", constraint: "Min Spend $70", state: "Live" },
+            { code: "EXPIRED5", type: "5% Deduct", constraint: "None", state: "Expired" }
+        ];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Hide Initial Site Loader
+            const loader = document.getElementById('loader');
+            setTimeout(() => {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 600);
+
+            // Authorization Simulation Hook
+            const savedAuth = localStorage.getItem('admin_auth_token');
+            if (savedAuth === 'true') {
+                launchAdminLayout();
+            }
+
+            document.getElementById('simulatedLoginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                localStorage.setItem('admin_auth_token', 'true');
+                
+                // Play aesthetic visual loading
+                loader.style.display = 'flex';
+                loader.style.opacity = '1';
+                setTimeout(() => {
+                    launchAdminLayout();
+                    loader.style.opacity = '0';
+                    setTimeout(() => { loader.style.display = 'none'; }, 500);
+                }, 800);
+            });
+
+            document.getElementById('logoutAdminBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                localStorage.removeItem('admin_auth_token');
+                window.location.reload();
+            });
+
+            // Build Dynamic Tables Data
+            renderDashboardHotSellers();
+            renderProductsTable();
+            renderOrdersTable();
+            renderCategoriesTable();
+            renderCustomersTable();
+            renderCouponsTable();
+        });
+
+        // Simulated Startup
+        function launchAdminLayout() {
+            document.getElementById('login-screen').style.display = 'none';
+            document.getElementById('admin-layout').style.display = 'flex';
+        }
+
+        // Core Single Page Routing Switcher Engine
+        function switchTab(sectionName, anchorElement) {
+            // Remove current active classes from links
+            document.querySelectorAll('.nav-link-custom').forEach(lnk => lnk.classList.remove('active'));
+            
+            // Remove active display from sections
+            document.querySelectorAll('.admin-section').forEach(sec => sec.classList.remove('active-section'));
+            
+            // Activate Target Components
+            const targetSection = document.getElementById('section-' + sectionName);
+            if (targetSection) {
+                targetSection.classList.add('active-section');
+            }
+
+            if (anchorElement) {
+                anchorElement.classList.add('active');
+            } else {
+                // Find link manually by href if triggered by buttons
+                const link = document.querySelector(`.nav-link-custom[href="#${sectionName}"]`);
+                if(link) link.classList.add('active');
+            }
+
+            // Update Document Title
+            const titles = {
+                'dashboard': 'Dashboard Overview',
+                'orders': 'Live Orders Queue',
+                'products': 'Store Products Directory',
+                'categories': 'Product Categories Hub',
+                'customers': 'Customer Records Hub',
+                'coupons': 'Promotional Coupons Hub',
+                'settings': 'Core Store Configurations'
+            };
+            
+            const displayTitle = titles[sectionName] || 'Admin Portal';
+            document.getElementById('pageTitleDisplay').innerText = displayTitle;
+
+            // Close Mobile Drawer automatically
+            document.querySelector('.sidebar').classList.remove('show');
+        }
+
+        // Dynamic Render Functions
+        function renderDashboardHotSellers() {
+            const container = document.getElementById('hot-sellers-dashboard');
+            if (!container) return;
+
+            // Sort by highest sales and grab top 3
+            const sorted = [...PRODUCTS_MOCK].sort((a,b) => b.sales - a.sales).slice(0, 3);
+
+            container.innerHTML = sorted.map(prod => `
+                <div class="d-flex align-items-center gap-3 border-bottom pb-3" style="border-color: #f1f5f9 !important;">
+                    <img src="${prod.img}" alt="Cake" class="rounded-3" style="width: 50px; height: 50px; object-fit: cover;">
+                    <div class="flex-grow-1">
+                        <h6 class="mb-0 fw-bold text-dark">${prod.name}</h6>
+                        <small class="text-muted">${prod.category}</small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold text-dark" style="font-size: 0.9rem;">${prod.sales} Sales</div>
+                        <small class="text-success fw-semibold" style="font-size: 0.75rem;"><i class="fas fa-caret-up"></i> Top Seller</small>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderProductsTable() {
+            const tbody = document.querySelector('#adminProductsList tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = PRODUCTS_MOCK.map(prod => `
+                <tr>
+                    <td><img src="${prod.img}" alt="Cake" class="rounded-3" style="width: 45px; height: 45px; object-fit: cover; border: 1px solid #e2e8f0;"></td>
+                    <td><span class="fw-bold text-dark">${prod.name}</span></td>
+                    <td><code class="text-muted">${prod.sku}</code></td>
+                    <td><span class="text-muted">${prod.category}</span></td>
+                    <td class="fw-bold">$${prod.price.toFixed(2)}</td>
+                    <td class="text-end">
+                        <div class="btn-group">
+                            <button class="btn btn-sm btn-light border" title="Edit Product" onclick="alert('Launcher Mock: Product Config Master Loaded for SKU ${prod.sku}')"><i class="fas fa-pencil-alt text-muted"></i></button>
+                            <button class="btn btn-sm btn-light border text-danger" title="Archive Product" onclick="if(confirm('Are you sure you wish to toggle visibility status for ${prod.name}?')) alert('Status Updated Mock!')"><i class="far fa-trash-can"></i></button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderOrdersTable() {
+            const tbody = document.querySelector('#adminOrdersList tbody');
+            if(!tbody) return;
+
+            tbody.innerHTML = ORDERS_MOCK.map(ord => {
+                let statusCls = 'status-pending';
+                if (ord.status === 'Processing') statusCls = 'status-processing';
+                if (ord.status === 'Delivered') statusCls = 'status-delivered';
+                if (ord.status === 'Cancelled') statusCls = 'status-cancelled';
+
+                return `
+                    <tr>
+                        <td class="fw-bold text-dark">${ord.id}</td>
+                        <td>
+                            <div class="fw-semibold">${ord.name}</div>
+                            <small class="text-muted" style="font-size: 0.75rem;">Registered Member</small>
+                        </td>
+                        <td class="text-muted">${ord.date}</td>
+                        <td><span class="status-pill ${statusCls}">${ord.status}</span></td>
+                        <td class="fw-bold">$${ord.amount.toFixed(2)}</td>
+                        <td class="text-end">
+                            <button class="btn btn-sm btn-light border" onclick="alert('Simulated Details Interface: Complete items breakout shown for ID ${ord.id}')"><i class="far fa-file-lines text-gold me-1"></i> Details</button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        function renderCategoriesTable() {
+            const tbody = document.querySelector('#adminCategoriesList tbody');
+            if(!tbody) return;
+
+            tbody.innerHTML = CATEGORIES_MOCK.map(cat => `
+                <tr>
+                    <td class="fw-bold text-dark">${cat.name}</td>
+                    <td><span class="badge bg-secondary bg-opacity-10 text-muted px-2 py-1 rounded">${cat.count} Linked Products</span></td>
+                    <td><span class="status-pill ${cat.status === 'Active' ? 'status-delivered' : 'status-cancelled'}">${cat.status}</span></td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-light border text-muted" onclick="alert('Category Configuration Launch')"><i class="fas fa-gear"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderCustomersTable() {
+            const tbody = document.querySelector('#adminCustomersList tbody');
+            if (!tbody) return;
+
+            tbody.innerHTML = CUSTOMERS_MOCK.map(cust => `
+                <tr>
+                    <td>
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-secondary bg-opacity-10 text-secondary fw-bold rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px; font-size: 0.8rem;">
+                                ${cust.name.split(' ').map(n => n[0]).join('')}
+                            </div>
+                            <div>
+                                <div class="fw-bold text-dark">${cust.name}</div>
+                                <small class="text-muted" style="font-size:0.75rem;">Verified Consumer</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td><code class="text-dark">${cust.email}</code></td>
+                    <td class="text-muted">${cust.joined}</td>
+                    <td class="fw-bold">${cust.orders} Full Orders</td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-light border" onclick="alert('Consumer Profile Inspector Engine')"><i class="far fa-id-badge"></i> View Profile</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderCouponsTable() {
+            const tbody = document.querySelector('#adminCouponsList tbody');
+            if(!tbody) return;
+
+            tbody.innerHTML = COUPONS_MOCK.map(coup => `
+                <tr>
+                    <td><span class="badge bg-dark font-monospace px-3 py-2 rounded">${coup.code}</span></td>
+                    <td class="fw-bold text-dark">${coup.type}</td>
+                    <td class="text-muted">${coup.constraint}</td>
+                    <td><span class="status-pill ${coup.state === 'Live' ? 'status-delivered' : 'status-cancelled'}">${coup.state}</span></td>
+                    <td class="text-end">
+                        <button class="btn btn-sm btn-light border text-muted" onclick="alert('Promo Constraint Editor Mock')"><i class="fas fa-edit"></i></button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Simulated Category Add Routine
+        function addNewCategoryMock() {
+            const name = document.getElementById('newCatName').value.trim();
+            if (!name) {
+                alert('Kindly provide a category label title!');
+                return;
+            }
+            
+            CATEGORIES_MOCK.push({
+                name: name,
+                count: 0,
+                status: 'Active'
+            });
+
+            renderCategoriesTable();
+            document.getElementById('newCatName').value = '';
+            alert(`Mock Database Operation Successful: "${name}" is now provisioned as an active store category context!`);
+        }
+    </script>
+</body>
+</html>

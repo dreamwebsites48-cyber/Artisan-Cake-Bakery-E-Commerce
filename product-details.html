@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cake Details | Artisan Cake Bakery</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Custom Theme Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Luxury Page Loader -->
+    <div id="loader">
+        <div class="cake-loader">🎂</div>
+    </div>
+
+    <!-- Navigation Bar (Glassmorphism Theme) -->
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <i class="fas fa-birthday-cake text-gold fs-3"></i>
+                <span class="brand-text">Artisan</span>
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars fs-3 text-dark"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Shop Cakes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Our Story</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-4">
+                    <button class="btn border-0 p-0 fs-5 text-dark" id="darkModeToggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="cart.html" class="btn border-0 p-0 fs-5 text-dark position-relative" aria-label="Open Shopping Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nav-cart-badge" style="font-size: 0.6rem;">0</span>
+                    </a>
+                    <div id="auth-container">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Section Content -->
+    <main>
+        <!-- Breadcrumbs Navigation Overlay -->
+        <nav class="bg-light py-3 border-bottom mt-0" aria-label="breadcrumb">
+            <div class="container">
+                <ol class="breadcrumb mb-0 small">
+                    <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none text-muted">Home</a></li>
+                    <li class="breadcrumb-item"><a href="products.html" class="text-decoration-none text-muted">Shop Catalog</a></li>
+                    <li class="breadcrumb-item"><a href="#" class="text-decoration-none text-muted" id="det-breadcrumb-cat">Category</a></li>
+                    <li class="breadcrumb-item active fw-bold" id="det-breadcrumb-name" aria-current="page">Product Name</li>
+                </ol>
+            </div>
+        </nav>
+
+        <!-- Detail Section Container -->
+        <section class="py-5">
+            <div class="container">
+                <div class="row g-5 align-items-center">
+                    <!-- Product Image & Gallery Panel -->
+                    <div class="col-lg-6 animate__animated animate__fadeInLeft">
+                        <div class="position-relative mb-4 shadow-sm rounded-4 overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?ixlib=rb-4.0.3&w=800&q=80" id="mainImage" alt="Featured Artisan Cake" class="img-fluid w-100 object-fit-cover" style="height: 520px;">
+                        </div>
+                        <div class="row g-3" id="thumbs-row">
+                            <!-- Thumbnails populated dynamically from JS -->
+                        </div>
+                    </div>
+
+                    <!-- Interactive Configuration Form Column -->
+                    <div class="col-lg-6 animate__animated animate__fadeInRight">
+                        <div class="d-flex align-items-center mb-3 gap-2">
+                            <div class="rating" id="det-rating">
+                                <!-- Star Icons rendered here -->
+                            </div>
+                            <span class="text-muted small" id="det-reviews-count">(0 Customer Reviews)</span>
+                        </div>
+
+                        <h1 class="fw-bold display-5 mb-3 brand-text" id="det-title">Artisan Masterpiece</h1>
+                        
+                        <div class="fs-2 fw-bold text-gold mb-4 d-flex align-items-center" id="det-price" style="color: var(--color-gold);">
+                            $0.00
+                        </div>
+                        
+                        <p class="text-muted lead mb-4" id="det-desc">Loading details...</p>
+                        
+                        <hr class="my-4">
+
+                        <form onsubmit="event.preventDefault();">
+                            <!-- Selection Config Row -->
+                            <div class="row g-4 mb-4">
+                                <div class="col-md-6">
+                                    <label class="fw-bold mb-2 small text-muted text-uppercase">Select Weight</label>
+                                    <select class="form-select bg-light border-0 py-3 shadow-none cursor-pointer" id="det-weight-sel">
+                                        <option value="0.5 Kg" selected>0.5 Kg (Standard)</option>
+                                        <option value="1.0 Kg">1.0 Kg (+$15.00)</option>
+                                        <option value="2.0 Kg">2.0 Kg (+$40.00)</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="fw-bold mb-2 small text-muted text-uppercase">Flavor Foundation</label>
+                                    <select class="form-select bg-light border-0 py-3 shadow-none cursor-pointer" id="det-flavor-sel">
+                                        <option value="Classic Base" selected>Classic Base</option>
+                                        <option value="Deep Velvet Base">Deep Velvet Base</option>
+                                        <option value="Dark Cocoa Infusion">Dark Cocoa Infusion</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Switch Option Panel -->
+                            <div class="mb-4 bg-light rounded-4 p-3 border">
+                                <div class="form-check form-switch d-flex justify-content-between ps-0">
+                                    <label class="form-check-label fw-bold text-dark cursor-pointer ms-1" for="egglessSwitch">
+                                        <i class="fas fa-leaf text-success me-2"></i> Make it Eggless (+$2.00)
+                                    </label>
+                                    <input class="form-check-input m-0 cursor-pointer border-secondary" type="checkbox" role="switch" id="egglessSwitch">
+                                </div>
+                            </div>
+
+                            <!-- Action Controls Layout -->
+                            <div class="d-flex flex-wrap gap-3 align-items-center mb-4 pt-2">
+                                <div class="input-group border rounded-pill overflow-hidden" style="width: 140px; height: 54px;">
+                                    <button class="btn btn-light bg-white border-0 px-3 text-dark fs-5" type="button" id="det-qty-minus">-</button>
+                                    <input type="text" class="form-control border-0 bg-white text-center fw-bold fs-5 text-dark" value="1" id="det-qty-input" readonly>
+                                    <button class="btn btn-light bg-white border-0 px-3 text-dark fs-5" type="button" id="det-qty-plus">+</button>
+                                </div>
+                                
+                                <button type="button" class="btn btn-gold py-3 px-4 fw-bold flex-grow-1 shadow d-flex align-items-center justify-content-center gap-2 h-100" id="det-add-btn" style="height: 54px;">
+                                    <i class="fas fa-shopping-bag"></i> Add to Shopping Cart
+                                </button>
+                                
+                                <button type="button" class="btn btn-outline-brown rounded-circle d-flex align-items-center justify-content-center wishlist-btn-alt" style="width: 54px; height: 54px;" onclick="this.classList.toggle('text-danger'); alert('Added to Wishlist!');">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <!-- Extra Metadata Container -->
+                        <div class="pt-4 border-top mt-4">
+                            <ul class="list-unstyled text-muted small d-flex flex-column gap-2 mb-0">
+                                <li><strong class="text-dark text-uppercase me-2 small">SKU:</strong> <span id="det-sku">CAKE-000</span></li>
+                                <li><strong class="text-dark text-uppercase me-2 small">Category:</strong> <a href="#" class="text-decoration-none text-muted" id="det-cat-label">None</a></li>
+                                <li><strong class="text-dark text-uppercase me-2 small">Tags:</strong> <span id="det-tags">Cake, Artisan</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Extra Information Tabs -->
+                <div class="row mt-5 pt-5 animate-on-scroll" data-animation="animate__fadeIn">
+                    <div class="col-12">
+                        <ul class="nav nav-tabs justify-content-center border-0 mb-5 fs-5 gap-3" id="detailTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active bg-transparent border-0 text-dark fw-bold px-4 py-2 border-bottom border-3 border-gold rounded-0" id="description-tab" data-bs-toggle="tab" data-bs-target="#desc-pane" type="button">Product Narrative</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link bg-transparent border-0 text-muted px-4 py-2 rounded-0" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#review-pane" type="button">Reviews & Ratings</button>
+                            </li>
+                        </ul>
+                        
+                        <div class="tab-content text-center" id="detailTabsContent">
+                            <!-- Pane 1 -->
+                            <div class="tab-pane fade show active max-w-75 mx-auto py-2" id="desc-pane" role="tabpanel" aria-labelledby="description-tab">
+                                <p class="text-muted lead fs-6 lh-lg" style="max-width: 750px; margin: 0 auto;">
+                                    Every single cake built in our artisan studio is baked absolutely fresh to order, utilizing only premium quality local and imported gourmet ingredients. We use 70% luxury Belgian dark cocoa for our premium chocolate derivatives, resulting in robust flavors that possess sophisticated balance. Our sponges are lightly soaked in our house-made infused botanicals for exceptional moisture retention. Everything is finished by hand, creating custom visuals designed for distinct visual impact and celebration centerpieces.
+                                </p>
+                                <div class="mt-5 d-flex flex-wrap justify-content-center gap-5">
+                                    <div class="d-flex align-items-center gap-2"><i class="fas fa-check-circle text-success fs-5"></i> <span class="fw-bold">100% Gourmet Quality</span></div>
+                                    <div class="d-flex align-items-center gap-2"><i class="fas fa-check-circle text-success fs-5"></i> <span class="fw-bold">Zero Chemical Preservatives</span></div>
+                                    <div class="d-flex align-items-center gap-2"><i class="fas fa-check-circle text-success fs-5"></i> <span class="fw-bold">Fresh Baked on Order Day</span></div>
+                                </div>
+                            </div>
+                            
+                            <!-- Pane 2 -->
+                            <div class="tab-pane fade text-start" id="review-pane" role="tabpanel" aria-labelledby="reviews-tab">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-8">
+                                        <!-- Comment Card 1 -->
+                                        <div class="d-flex gap-4 mb-4 border-bottom pb-4">
+                                            <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center fw-bold" style="width: 54px; height: 54px; flex-shrink: 0; font-size: 1.2rem;">AM</div>
+                                            <div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <h6 class="fw-bold mb-0">Amelia Matthews</h6>
+                                                    <span class="text-muted small">October 24, 2025</span>
+                                                </div>
+                                                <div class="text-warning small mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                                                <p class="text-muted mb-0">Absolutely spectacular creation! The textures are incredibly light yet layered with distinct luxury flavors. It captured everyone's immediate attention at our anniversary event.</p>
+                                            </div>
+                                        </div>
+                                        <!-- Comment Card 2 -->
+                                        <div class="d-flex gap-4 border-bottom pb-4 mb-4">
+                                            <div class="rounded-circle bg-dark text-white d-flex align-items-center justify-content-center fw-bold" style="width: 54px; height: 54px; flex-shrink: 0; font-size: 1.2rem;">DR</div>
+                                            <div>
+                                                <div class="d-flex justify-content-between mb-1">
+                                                    <h6 class="fw-bold mb-0">Daniel Ricardo</h6>
+                                                    <span class="text-muted small">September 15, 2025</span>
+                                                </div>
+                                                <div class="text-warning small mb-2"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i></div>
+                                                <p class="text-muted mb-0">Top tier craftsmanship. Definitely premium, the moisture levels are exactly what you seek in a gourmet bakery. Ordering another one soon!</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer pt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h3 class="text-white mb-4 d-flex align-items-center gap-2 fw-bold">
+                        <i class="fas fa-birthday-cake text-gold"></i> Artisan Bakery
+                    </h3>
+                    <p class="text-white-50">Crafting moments of genuine joy with every luxury slice. Experience the indulgence of premium, handcrafted cakes baked fresh and delivered directly.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook Page"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter Feed"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Pinterest Boards"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="text-white mb-4 fw-bold">Quick Links</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-3">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Shop Cakes</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="text-white mb-4 fw-bold">Categories</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-3">
+                        <li><a href="products.html">Birthday Cakes</a></li>
+                        <li><a href="products.html">Wedding Cakes</a></li>
+                        <li><a href="products.html">Chocolate Delights</a></li>
+                        <li><a href="products.html">Vegan Options</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="text-white mb-4 fw-bold">Join Our Newsletter</h5>
+                    <p class="text-white-50 small mb-3">Subscribe to receive gourmet recipes, exclusive private deals, and seasonal collection updates.</p>
+                    <form class="d-flex" onsubmit="event.preventDefault(); alert('Successfully Subscribed!'); this.reset();">
+                        <input type="email" class="form-control rounded-pill rounded-end-0 border-0 bg-white py-2 px-3" style="color: #333 !important;" placeholder="Email Address" required>
+                        <button class="btn btn-gold rounded-pill rounded-start-0 px-4" type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25 mt-5">
+            <div class="row mt-4">
+                <div class="col-12 text-center text-white-50 small">
+                    <p class="mb-0">&copy; 2026 Artisan Cake Bakery. All rights reserved. Designed with passion.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Theme and Functional Controller Scripts -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>

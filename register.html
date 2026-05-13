@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique Membership Registration | Artisan Cake Bakery</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <!-- Custom Theme Styles -->
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+    <!-- Luxury Page Loader -->
+    <div id="loader">
+        <div class="cake-loader">🎂</div>
+    </div>
+
+    <!-- Navigation Bar (Glassmorphism Theme) -->
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top py-3">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+                <i class="fas fa-birthday-cake text-gold fs-3"></i>
+                <span class="brand-text">Artisan</span>
+            </a>
+            <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <i class="fas fa-bars fs-3 text-dark"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="products.html">Shop Cakes</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Our Story</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-4">
+                    <button class="btn border-0 p-0 fs-5 text-dark" id="darkModeToggle" aria-label="Toggle Dark Mode">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <a href="cart.html" class="btn border-0 p-0 fs-5 text-dark position-relative" aria-label="Open Shopping Cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger nav-cart-badge" style="font-size: 0.6rem;">0</span>
+                    </a>
+                    <div id="auth-container">
+                        <!-- Filled dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Layout Grid -->
+    <main>
+        <section class="container py-5 my-5">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6 animate__animated animate__fadeInUp">
+                    <div class="card border-0 shadow-lg rounded-4 overflow-hidden p-2 bg-light">
+                        <div class="card-body bg-white rounded-3 p-5 pt-4 shadow-sm">
+                            
+                            <!-- Registration Branding Header -->
+                            <div class="text-center mb-5 pb-1">
+                                <div class="text-gold display-4 mb-3 animate__animated animate__pulse animate__infinite animate__slow">
+                                    <i class="fas fa-user-plus" style="color: var(--color-gold);"></i>
+                                </div>
+                                <h3 class="fw-bold brand-text text-dark">Create Profile</h3>
+                                <p class="text-muted small">Join our luxury gourmet club for fast checkout.</p>
+                            </div>
+
+                            <!-- Integrated Dynamic Control Form -->
+                            <form>
+                                <div class="row g-4">
+                                    <!-- Field 1 Name -->
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold text-uppercase mb-2">Full Signature Name</label>
+                                        <div class="input-group border rounded-3 bg-light overflow-hidden shadow-none">
+                                            <span class="input-group-text border-0 bg-light text-gold px-3"><i class="fas fa-user"></i></span>
+                                            <input type="text" class="form-control border-0 bg-light ps-0 py-2" placeholder="John Doe" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Field 2 Tel -->
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold text-uppercase mb-2">Primary Telephone</label>
+                                        <div class="input-group border rounded-3 bg-light overflow-hidden shadow-none">
+                                            <span class="input-group-text border-0 bg-light text-gold px-3"><i class="fas fa-phone"></i></span>
+                                            <input type="tel" class="form-control border-0 bg-light ps-0 py-2" placeholder="+1 (555) 000-0000" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Field 3 Mail -->
+                                    <div class="col-12">
+                                        <label class="form-label text-muted small fw-bold text-uppercase mb-2">Digital Email Contact</label>
+                                        <div class="input-group border rounded-3 bg-light overflow-hidden shadow-none">
+                                            <span class="input-group-text border-0 bg-light text-gold px-3"><i class="fas fa-envelope"></i></span>
+                                            <input type="email" class="form-control border-0 bg-light ps-0 py-2" placeholder="member@example.com" required>
+                                        </div>
+                                    </div>
+
+                                    <!-- Field 4 Pass -->
+                                    <div class="col-md-6">
+                                        <label class="form-label text-muted small fw-bold text-uppercase mb-2">Create Access Key</label>
+                                        <div class="input-group border rounded-3 bg-light overflow-hidden shadow-none">
+                                            <span class="input-group-text border-0 bg-light text-gold px-3"><i class="fas fa-lock"></i></span>
+                                            <input type="password" class="form-control border-0 bg-light ps-0 py-2" placeholder="Enter Secure Key" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Field 5 Verify Pass -->
+                                    <div class="col-md-6 mb-2">
+                                        <label class="form-label text-muted small fw-bold text-uppercase mb-2">Verify Access Key</label>
+                                        <div class="input-group border rounded-3 bg-light overflow-hidden shadow-none">
+                                            <span class="input-group-text border-0 bg-light text-gold px-3"><i class="fas fa-lock"></i></span>
+                                            <input type="password" class="form-control border-0 bg-light ps-0 py-2" placeholder="Confirm Key" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Legal Check -->
+                                <div class="mb-4 form-check pb-1">
+                                    <input type="checkbox" class="form-check-input border-secondary" id="legalCheck" required>
+                                    <label class="form-check-label text-muted small cursor-pointer ms-1" for="legalCheck">I agree strictly with gourmet membership privacy terms</label>
+                                </div>
+
+                                <button type="submit" class="btn btn-gold w-100 py-3 rounded-pill fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 mt-2">
+                                    Register Luxury Profile <i class="fas fa-user-plus small"></i>
+                                </button>
+                            </form>
+
+                            <!-- Direct Path to Login Panel -->
+                            <div class="text-center mt-5 pt-3 border-top">
+                                <p class="text-muted small mb-0">Already hold our premium portal keys? <a href="login.html" class="text-decoration-none fw-bold" style="color: var(--color-gold);">Execute Secure Login</a></p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer pt-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h3 class="text-white mb-4 d-flex align-items-center gap-2 fw-bold">
+                        <i class="fas fa-birthday-cake text-gold"></i> Artisan Bakery
+                    </h3>
+                    <p class="text-white-50">Crafting moments of genuine joy with every luxury slice. Experience the indulgence of premium, handcrafted cakes baked fresh and delivered directly.</p>
+                    <div class="social-icons mt-4">
+                        <a href="#" aria-label="Instagram Profile"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Facebook Page"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter Feed"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Pinterest Boards"><i class="fab fa-pinterest-p"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="text-white mb-4 fw-bold">Quick Links</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-3">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="products.html">Shop Cakes</a></li>
+                        <li><a href="about.html">Our Story</a></li>
+                        <li><a href="contact.html">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6 mb-4">
+                    <h5 class="text-white mb-4 fw-bold">Categories</h5>
+                    <ul class="list-unstyled d-flex flex-column gap-3">
+                        <li><a href="products.html">Birthday Cakes</a></li>
+                        <li><a href="products.html">Wedding Cakes</a></li>
+                        <li><a href="products.html">Chocolate Delights</a></li>
+                        <li><a href="products.html">Vegan Options</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="text-white mb-4 fw-bold">Join Our Newsletter</h5>
+                    <p class="text-white-50 small mb-3">Subscribe to receive gourmet recipes, exclusive private deals, and seasonal collection updates.</p>
+                    <form class="d-flex" onsubmit="event.preventDefault(); alert('Successfully Subscribed!'); this.reset();">
+                        <input type="email" class="form-control rounded-pill rounded-end-0 border-0 bg-white py-2 px-3" style="color: #333 !important;" placeholder="Email Address" required>
+                        <button class="btn btn-gold rounded-pill rounded-start-0 px-4" type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <hr class="border-secondary opacity-25 mt-5">
+            <div class="row mt-4">
+                <div class="col-12 text-center text-white-50 small">
+                    <p class="mb-0">&copy; 2026 Artisan Cake Bakery. All rights reserved. Designed with passion.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Scripts Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Application Orchestrator Orchestrator Scripts -->
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
